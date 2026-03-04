@@ -1,0 +1,9 @@
+{
+    "year": 2023,
+    "source_url": "https://spdf.gsfc.nasa.gov/pub/data/omni/low_res_omni/omni2_2023.dat",
+    "download_timestamp": "2026-03-03T19:14:09.586387",
+    "local_path": "../data/raw/omni2_2023_raw.csv",
+    "row_count": 8760,
+    "license": "Public Domain (NASA SPDF)",
+    "ethical_considerations": "Non-sensitive physical measurement data; no PII."
+}

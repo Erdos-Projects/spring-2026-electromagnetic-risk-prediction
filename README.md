@@ -9,7 +9,7 @@ Geomagnetic storms driven by solar activity pose risks to power grids, satellite
 ## Data Inventory & Provenance
 | Source | Access Method | Frequency | License |
 | :--- | :--- | :--- | :--- |
-| **NASA OMNIWeb** | HTTPS/CSV (src/data/fetch_nasa_omni_historical.py) | Hourly (Historical) | Public Domain |
-| **NOAA SWPC** | JSON API (Real-time stream) | 1-Minute | Public Domain |
+| **NASA OMNIWeb** | HTTPS/CSV (`src/data/fetch_nasa_omni_historical.py`) | Hourly (Historical) | Public Domain |
+| **NOAA SWPC** | JSON API (Real-time stream) (`src/data/fetch_noaa_realtime.py`) | 1-Minute | Public Domain |
 
 

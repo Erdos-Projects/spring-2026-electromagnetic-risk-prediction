@@ -11,6 +11,8 @@ dependencies:
   - scikit-learn
   - jupyter
   - ipykernel
+  - seaborn
+  - statsmodels
   - pip
   - pip:
     # Add any pip-only packages here if needed

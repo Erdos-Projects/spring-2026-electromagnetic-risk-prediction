@@ -46,9 +46,9 @@ def fetch_and_log_omni_data(year, output_dir='data/raw/'):
     
     try:
         # 1. Acquisition
-        cols = ['Year', 'DOY', 'Hour', 'IMF_Mag', 'Bz_GSE', 'Proton_Density', 'Plasma_Speed', 'Kp_index']
+        cols = ['Year', 'DOY', 'Hour', 'IMF_Mag', 'Bx_GSE', 'By_GSE', 'Bz_GSE', 'Proton_Density', 'Plasma_Speed', 'Kp_index']
         # Specific indices from NASA documentation
-        df = pd.read_csv(url, sep='\s+', header=None, usecols=[0, 1, 2, 12, 15, 23, 24, 38], names=cols)
+        df = pd.read_csv(url, sep='\s+', header=None, usecols=[0, 1, 2, 12, 13, 14, 15, 23, 24, 38], names=cols)
         
         # 2. Save Raw Data (The "Documentation of Provenance" requirement)
         df.to_csv(raw_path, index=False)
@@ -100,7 +100,7 @@ def clean_nasa_omni_historical(df):
     df.set_index('Timestamp', inplace=True)
 
     # Handle 'Ghost' Data (NASA fill values)
-    # Kp is 0-90, Bz is ~ +/- 50, Speed is ~300-1000. 999s are errors.
+    # Kp is 0-90, Bx, By, Bz are ~ +/- 50, Speed is ~300-1000. 999s are errors.
     df = df.replace([99.9, 999.9, 9999., 99], np.nan)
     df = df.interpolate(method='linear')
 

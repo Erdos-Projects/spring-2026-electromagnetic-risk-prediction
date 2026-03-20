@@ -30,7 +30,7 @@ def fetch_and_log_omni_data(year, output_dir='data/raw/'):
     Downloads raw OMNI data, saves it to disk, and returns dataframe if successful.
 
     Load historical NASA OMNI data for a given year as a dataframe with columns
-    ['Year', 'DOY', 'Hour', 'IMF_Mag', 'Bz_GSE', 'Proton_Density', 'Plasma_Speed', 'Kp_index'].
+    ['Year', 'DOY', 'Hour', 'IMF_Mag', 'Bx_GSE', 'By_GSE', 'Bz_GSE', 'Proton_Density', 'Plasma_Speed', 'Kp_index'].
 
     Information about the dataset is available here: https://omniweb.gsfc.nasa.gov/html/ow_data.html
     """
@@ -108,7 +108,7 @@ def clean_nasa_omni_historical(df):
     df.replace(999.99, np.nan, inplace=True)
     
     # Kp index is given as 0-90, we convert it to a real Kp value by dividing by 10
-    df['Kp_real'] = df['Kp_index'] / 10.0    
+    # df['Kp_real'] = df['Kp_index'] / 10.0    
     
     return df
 
@@ -120,3 +120,33 @@ def load_and_clean_nasa_omni_historical(year, output_dir='data/raw/'):
     df_raw = load_raw_omni_historical_if_exists(year, output_dir)
     df_clean = clean_nasa_omni_historical(df_raw)
     return df_clean
+
+
+def load_and_clean_nasa_omni_historical_for_years(years, output_dir='data/raw/'):
+    """
+    Load and clean NASA OMNI historical data for multiple years, returned as a list of dataframes.
+    """
+    yearly_dataframes = []
+    for year in years:
+        df_year = load_and_clean_nasa_omni_historical(year, output_dir)
+        yearly_dataframes.append(df_year)
+
+    return yearly_dataframes    
+
+def merge_yearly_dataframes(yearly_dataframes, drop_duplicate_index=True, sort_index=True):
+    """
+    Merge multiple yearly dataframes into a single dataframe.
+    """
+    if not yearly_dataframes:
+        raise ValueError("yearly_dataframes must contain at least one dataframe")
+
+    merged_df = pd.concat(yearly_dataframes, axis=0)
+
+    if drop_duplicate_index:
+        merged_df = merged_df[~merged_df.index.duplicated(keep='first')]
+
+    if sort_index:
+        merged_df = merged_df.sort_index()
+
+    return merged_df
+

@@ -1,5 +1,11 @@
 import pandas as pd
 import numpy as np
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class Event:
+    start: pd.Timestamp
+    end: pd.Timestamp  # inclusive
 
 class SolarWindTransformer:
     """
@@ -80,15 +86,85 @@ class SolarWindTransformer:
         return df
 
     @staticmethod
+    def compute_newell_coupling(df):
+        """
+        Compute Newell coupling function: V^(4/3) * B^(2/3) * sin^(8/3)(theta/2)
+        This represents the efficiency of solar wind energy coupling to the magnetosphere.
+        """
+        df['Newell_Coupling'] = (
+            df['Plasma_Speed']**(4/3) * 
+            df['B_total']**(2/3) * 
+            np.abs(np.sin(df['B_azimuth'] / 2))**(8/3)
+        )
+        return df
+
+    @staticmethod
+    def compute_newell_integral(df, window=3):
+        df[f'Newell_{window}H_Integral'] = df['Newell_Coupling'].rolling(window=window).sum()
+        return df
+
+    @staticmethod
+    def compute_rolling_min_and_max(df, bz_col, window=3):
+        df[f'Bz_{window}H_Max'] = df[bz_col].rolling(window=window).max()
+        df[f'Bz_{window}H_Min'] = df[bz_col].rolling(window=window).min()
+        df[f'B_std_{window}H'] = df['B_total'].rolling(window=window).std()
+        return df
+
+    @staticmethod
+    def engineer_confidence_gates(df, threshold=40000):
+        """
+        Creates a 'sustained energy' feature. 
+        Higher values = much higher Precision for storm events.
+        """
+        if threshold is None:
+            threshold = 10000 # df['Newell_Coupling'].quantile(0.9)
+        
+        is_above = (df['Newell_Coupling'] > threshold).astype(int)
+        df['Storm_Potential_High'] = is_above
+        return df 
+
+    @staticmethod
     def transform(df, speed_col='Plasma_Speed', bx_col='Bx_GSE', by_col='By_GSE', bz_col='Bz_GSE', time_col='Timestamp'):
         """
         Apply all transformations in sequence.
         """
-        df = SolarWindTransformer.compute_l1_lag(df, speed_column=speed_col)
+        # df = SolarWindTransformer.compute_l1_lag(df, speed_column=speed_col)
         df = SolarWindTransformer.engineer_southward_bz(df, bz_column=bz_col)
         df = SolarWindTransformer.engineer_energy_flux(df, speed_column=speed_col, bz_south_column='Bz_South')
         df = SolarWindTransformer.compute_energy_flux_rolling_average(df, window_hours=3)
         df = SolarWindTransformer.compute_speed_rolling_max(df, window_hours=6)
         df = SolarWindTransformer.engineer_magnetic_strength(df, bx_column=bx_col, by_column=by_col, bz_column=bz_col)
         df = SolarWindTransformer.engineer_azimuthal_angle(df, by_column=by_col, bz_column=bz_col)
+        df = SolarWindTransformer.compute_newell_coupling(df)
+        df = SolarWindTransformer.compute_newell_integral(df, window=3)
+        df = SolarWindTransformer.compute_rolling_min_and_max(df, bz_col=bz_col, window=3)
+        df = SolarWindTransformer.engineer_confidence_gates(df, threshold=40000)
         return df
+
+
+class StormEventExtractor:
+    """
+    Extracts storm events from Kp index time series.
+    """
+    STORM_KP_INDEX_THRESHOLD = 50
+
+    @staticmethod
+    def storm_bool_from_kp_index(kp_index): 
+        kp_index = kp_index.astype(float)
+        return kp_index >= STORM_KP_INDEX_THRESHOLD
+
+    @staticmethod
+    def extract_true_storm_events(storm):
+        """
+        Extract maximal contiguous True intervals.
+        """
+        if not isinstance(storm.index, pd.DatetimeIndex):
+            raise ValueError("storm must have a DatetimeIndex")
+        storm = storm.astype(bool).sort_index()
+
+        starts = storm & ~storm.shift(1, fill_value=False)
+        ends = storm & ~storm.shift(-1, fill_value=False)
+
+        start_times = storm.index[starts].to_list()
+        end_times = storm.index[ends].to_list()
+        return [Event(s, e) for s, e in zip(start_times, end_times)]

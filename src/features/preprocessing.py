@@ -16,8 +16,8 @@ class SolarWindPreprocessor:
     
     # Final selected features (from feature_selection.ipynb)
     FINAL_FEATURES = [
-        'DOY',
-        'Hour',
+        # 'DOY',
+        # 'Hour',
         'IMF_Mag',
         'Plasma_Speed',
         'Proton_Density',
@@ -27,7 +27,13 @@ class SolarWindPreprocessor:
         'Energy_Flux',
         'Energy_3h_Avg',
         'B_total',
-        'B_azimuth'
+        'B_azimuth',
+        #'Newell_Coupling',
+        #'Newell_3H_Integral',
+        'Bz_3H_Max',
+        'Bz_3H_Min',
+        'B_std_3H',
+        #'Storm_Potential_High'
     ]
     
     TARGET = 'Kp_index'

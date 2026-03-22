@@ -13,6 +13,8 @@ dependencies:
   - ipykernel
   - seaborn
   - statsmodels
+  - optuna
+  - lightgbm
   - pip
   - pip:
     # Add any pip-only packages here if needed

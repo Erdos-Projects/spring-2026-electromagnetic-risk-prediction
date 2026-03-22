@@ -1,0 +1,22 @@
+{
+  "model_type": "XGBClassifier",
+  "target_col": "Is_Storm",
+  "probability_threshold": 0.71,
+  "feature_columns": [
+    "DOY",
+    "Hour",
+    "IMF_Mag",
+    "Plasma_Speed",
+    "Proton_Density",
+    "By_GSE",
+    "Bz_GSE",
+    "Energy_Flux",
+    "B_total",
+    "B_azimuth",
+    "Newell_Coupling",
+    "Newell_3H_Integral",
+    "Bz_3H_Max",
+    "Bz_3H_Min",
+    "B_std_3H"
+  ]
+}

@@ -8,8 +8,41 @@ Geomagnetic storms driven by solar activity pose risks to power grids, satellite
 
 See `src/notebooks/final_results.ipynb` for final model training and evaluation.
 
+## Summary of results
+We provide a cross-validated XGBoost classifier trained on historical NASA data. 
+The model provides an approximately 45 minute prediction from solar wind data received by the NASA DSCOVR space weather station, located between the Earth and the Sun at the L1 Lagrange point, approximately 1.5 million kilometers from Earth.
+
+We produce the following chart of results in `src/notebooks/final_results.ipynb`.
+
+![Model results](presentation/model_evaluation.png)
+
+## Notebooks
+We include the following notebooks giving an overview of the data exploration, feature seleciton, and model selection processes.
+
+- **Final results / end-to-end modeling:** `notebooks/final_results.ipynb`
+- **Exploratory analysis:** `notebooks/eda.ipynb`
+- **Baseline model:** `notebooks/baseline.ipynb`
+- **Feature selection:** `notebooks/feature_selection.ipynb`
+- **Model selection / comparison:** `notebooks/model_selection.ipynb`
+
+## Repository Structure 
+- `notebooks/` — analysis and modeling notebooks (main work happens here)
+- `src/` — Python modules and scripts
+  - `src/data/` — data ingestion + alignment utilities
+  - `src/features/` — feature engineering code
+  - `src/models/` — model code
+- `data/` — datasets (often gitignored or partially tracked depending on size)
+- `artifacts/` — saved outputs (figures, models, intermediate results)
+- `presentation/` — slides / presentation material
+- `kpis.md` — KPI definitions and what “success” means for this project
+- `environment.yml` — reproducible conda environment
+
 ## Data Inventory & Provenance
 | Source | Access Method | Frequency | License |
 | :--- | :--- | :--- | :--- |
 | **NASA OMNIWeb** | HTTPS/CSV (`src/data/fetch_nasa_omni_historical.py`) | Hourly (Historical) | Public Domain |
 | **NOAA SWPC** | JSON API (Real-time stream) (`src/data/fetch_noaa_realtime.py`) | 1-Minute | Public Domain |
+
+## Other models
+- Note, the NOAA Space Weather Prediction Center provides real time space weather data and predictions at [https://www.swpc.noaa.gov/](https://www.swpc.noaa.gov/).
+- [SpaceWeatherLive.com](https://www.spaceweatherlive.com/) aggregates solar weather data across various sources. Additionally, they have an app and it can be used to predict whether auroral activity might be visible in your area!

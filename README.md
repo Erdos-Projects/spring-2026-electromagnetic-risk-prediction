@@ -2,7 +2,7 @@
 Team project: spring-2026-electromagnetic-risk-prediction
 
 ## Overview
-Geomagnetic storms driven by solar activity pose risks to power grids, satellites, and communication systems. In this project, we developed a data-driven solar-to-ground proxy model that predicts near-term geomagnetic activity using solar wind data. The final model is an XGBoost Classifier tuned to maximize correctly predicting when a storm occurs subject to keeping the false positive rate at an acceptable level. 
+Geomagnetic storms driven by solar activity pose risks to power grids, satellites, and communication systems. In this project, we developed a data-driven solar-to-ground proxy model that predicts near-term geomagnetic activity using solar wind data. The final model is an XGBoost Classifier tuned to maximize correctly predicting when a storm occurs subject to keeping the false positive rate at an acceptable level. This trade-off makes the model useful as an "early warning" indicator so operators can maintain a higher alertness to prepare for mitigation measures. To read more about possible impacts of and mitigation measures for geomagnetic storms, see this [Wikipedia overview](https://en.wikipedia.org/wiki/Geomagnetic_storm#Impacts).
 
 **Core Question:** Can we predict geomagnetic storms ($K_p \geq 5.0$) with using solar wind observations from NASA and NOAA? See `kpis.md` for details.
 

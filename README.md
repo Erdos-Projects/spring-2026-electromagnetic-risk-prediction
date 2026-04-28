@@ -1,4 +1,4 @@
-# Spring 2026: A Solar-to-Ground Model for Ground-Level Electromagnetic  Risk Prediction
+# Spring 2026: A Solar-to-Ground Model for Ground-Level Electromagnetic Risk Prediction
 This was a project for the Spring 2026 Erdős Institute Data Science program and was recognized as one of the top 5 projects (out of 23).
 
 Summary presentation available [here](https://www.erdosinstitute.org/project-database/spring-2026/data-science-boot-camp/a-solar-to-ground-proxy-model-for-ground-level-electromagnetic-(em)-risk-prediction).

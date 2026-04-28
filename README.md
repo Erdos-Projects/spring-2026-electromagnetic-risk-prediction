@@ -1,5 +1,7 @@
-# spring-2026-electromagnetic-risk-prediction
-Team project: spring-2026-electromagnetic-risk-prediction
+# Spring 2026: A Solar-to-Ground Model for Ground-Level Electromagnetic  Risk Prediction
+This was a project for the Spring 2026 Erdős Institute Data Science program and was recognized as one of the top 5 projects (out of 23).
+
+Summary presentation available [here](https://www.erdosinstitute.org/project-database/spring-2026/data-science-boot-camp/a-solar-to-ground-proxy-model-for-ground-level-electromagnetic-(em)-risk-prediction).
 
 ## Overview
 Geomagnetic storms driven by solar activity pose risks to power grids, satellites, and communication systems. In this project, we developed a data-driven solar-to-ground proxy model that predicts near-term geomagnetic activity using solar wind data. The final model is an XGBoost Classifier tuned to maximize correctly predicting when a storm occurs subject to keeping the false positive rate at an acceptable level. This trade-off makes the model useful as an "early warning" indicator so operators can maintain a higher alertness to prepare for mitigation measures. To read more about possible impacts of and mitigation measures for geomagnetic storms, see this [Wikipedia overview](https://en.wikipedia.org/wiki/Geomagnetic_storm#Impacts).
